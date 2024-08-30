@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Vraag Roulette</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #vraagContainer {
+            font-size: 24px;
+            margin: 20px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #startButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #choiceButtons {
+            margin-top: 20px;
+        }
+
+        .choiceButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Vraag Roulette</h1>
+    <div id="vraagContainer">Druk op de knop om een vraag te krijgen</div>
+    <button id="startButton">Start</button>
+
+    <div id="choiceButtons" style="display: none;">
+        <button class="choiceButton" id="choice1"></button>
+        <button class="choiceButton" id="choice2"></button>
+    </div>
+
+    <script>
+        const vragen = [
+            "Als je één moment in je leven zou kunnen herbeleven, welke zou je kiezen en waarom?",
+            "Wat is een doel of droom dat je hebt laten varen, en waarom?",
+            "Stel dat je morgen wakker wordt en je hebt de kans om je leven compleet opnieuw in te richten, wat zou je anders doen?",
+            "Wat is iets waarvan je vroeger dacht dat het belangrijk was, maar nu totaal niet meer?",
+            "Als je één onconventionele hobby of passie zou kunnen oppakken zonder oordeel van anderen, wat zou dat zijn?",
+            "Wat is het grootste risico dat je ooit hebt genomen, en zou je het weer doen?",
+            "Wat is het meest onverwachte advies dat je ooit hebt gekregen, en hoe heeft het je beïnvloed?",
+            "Als je één ding zou kunnen weten over je toekomst, wat zou dat zijn?",
+            "Welke les uit je jeugd heeft het meest impact gehad op wie je nu bent?",
+            "Als je een dag iemand anders uit onze groep zou kunnen zijn, wie zou je kiezen en wat zou je doen?",
+            "Wat is iets wat je nog nooit aan de groep hebt verteld, maar waarvan je denkt dat ze het nu wel zouden moeten weten?",
+            "Als je voor één dag een wereldleider zou zijn, welke beslissing zou je nemen om de wereld te veranderen?",
+            "Welk talent zou je willen bezitten als je morgen wakker werd en het perfect kon?",
+            "Wat is een stereotype over mannen van onze leeftijd waar je totaal niet in past?",
+            "Als je al je bezittingen zou moeten inruilen voor één object, wat zou dat zijn en waarom?",
+            "Wat is een boek, film of serie die je leven echt heeft veranderd?",
+            "Als je terugkijkt op je carrière, wat is dan het meest onverwachte dat je hebt geleerd?",
+            "Wat is een investering (niet per se financieel) waar je echt trots op bent?",
+            "Als je één dag zou kunnen ruilen met een historische figuur, wie zou dat zijn en waarom?",
+            "Wat is de meest onverwachte plek waar je jezelf ooit hebt gevonden, en hoe kwam je daar terecht?",
+            "Wat is het meest ongepaste dat je ooit hebt gezegd of gedaan tijdens een zakelijke bijeenkomst?",
+            "Heb je ooit iets gedaan waar je partner of familie nooit achter mag komen? Wat was het?",
+            "Wat is de grootste leugen die je ooit hebt verteld om jezelf uit de problemen te redden?",
+            "Wat is het wildste feestje waar je ooit bent geweest, en wat gebeurde daar wat je niemand hebt verteld?",
+            "Wat is het vreemdste dat je ooit op internet hebt opgezocht?",
+            "Als je een seksuele fantasie zou kunnen vervullen zonder gevolgen, wat zou het zijn?",
+            "Wat is het dichtstbij dat je ooit bent gekomen om gearresteerd te worden, en waarom?",
+            "Heb je ooit een vriend bedrogen of in de steek gelaten voor je eigen gewin? Wat was de situatie?",
+            "Als je zou kunnen ruilen van leven met een vriend voor één dag, alleen om zijn partner te kunnen leren kennen, wie zou je kiezen?",
+            "Wat is iets wat je ooit hebt gedaan om indruk te maken op iemand, waar je nu met schaamte op terugkijkt?",
+            "Wat is het grootste taboe dat je hebt doorbroken, en hoe voelde dat?",
+            "Heb je ooit een relatie beëindigd om een reden die je nooit eerlijk hebt gedeeld? Wat was de echte reden?",
+            "Wat is het raarste dat je ooit hebt gedaan terwijl je dronken was?",
+            "Wat is het meest gênante seksuele ongeluk dat je ooit hebt meegemaakt?",
+            "Heb je ooit iets gestolen, zelfs als het klein was? Wat was het en waarom?",
+            "Wat is het meest onverwachte wat je ooit hebt gedaan in een openbare ruimte?",
+            "Heb je ooit iemand laten vallen of niet gesteund in een moeilijke situatie, waar je nu spijt van hebt?",
+            "Wat is het meest ongebruikelijke verzoek dat je ooit hebt gekregen van een bedpartner?",
+            "Wat is het meest schandalige dat je ooit hebt gedaan tijdens een vrijgezellenfeest?",
+            "Heb je ooit een seksuele ervaring gehad waar je later spijt van had? Wat gebeurde er?",
+            "Wat is de grootste fout die je ooit in een relatie hebt gemaakt, en hoe reageerde je partner?",
+            "Wat is het vreemdste verzoek dat je ooit hebt ontvangen tijdens seks, en heb je het gedaan?",
+            "Heb je ooit een vriend bedrogen of voorgelogen om bij iemand in bed te belanden?",
+            "Wat is de grootste seksuele misser die je ooit hebt gehad?",
+            "Heb je ooit een ongemakkelijke situatie gehad met de partner van een vriend? Wat gebeurde er?",
+            "Wat is de meest beschamende plek waar je ooit betrapt bent tijdens seks?",
+            "Heb je ooit een relatie met iemand beëindigd vanwege slechte seks? Hoe heb je dat aangepakt?",
+            "Heb je ooit een dubbele date gehad waarbij je de verkeerde persoon aantrekkelijker vond? Wat heb je gedaan?",
+            "Wat is het meest ongepaste wat je ooit hebt gedaan in het huis van een vriend zonder dat ze het wisten?",
+            "Heb je ooit nagedacht over wat er zou gebeuren als je je partner zou bedriegen? Hoe ver ging die gedachte?",
+            "Wat is het vreemdste wat je ooit hebt geprobeerd tijdens seks dat totaal niet uitpakte zoals je had gehoopt?",
+            "Heb je ooit een seksuele fantasie gehad over een collega? Wat deed je eraan?",
+            "Wat is de ergste seksuele fout die je ooit hebt gemaakt tijdens een one-night stand?",
+            "Heb je ooit overwogen om vreemd te gaan en wat hield je tegen?",
+            "Wat is het gekste dat je ooit hebt gedaan in een dronken bui en waarvan je niemand de details hebt verteld?",
+            "Wat is je grootste angst die je nog nooit met iemand hebt gedeeld?",
+            "Als je jezelf in één woord moest omschrijven, welk woord zou dat zijn en waarom?",
+            "Wat is de moeilijkste keuze die je ooit hebt moeten maken en waarom?",
+            "Heb je ooit iets gedaan waar je diepe spijt van hebt en hoe ga je daarmee om?",
+            "Wat zou je veranderen aan je verleden als je de kans had, en waarom?",
+            "Wat is het meest eenzame dat je ooit hebt meegemaakt?",
+            "Wat is het meest uitdagende dat je ooit hebt overwonnen, en hoe heeft dat je veranderd?",
+            "Waarover lieg je het meest tegen jezelf, en waarom?",
+            "Wat is de grootste leugen die je ooit tegen iemand hebt verteld en waarom?",
+            "Als er één ding is waar je absoluut niet over durft te praten, wat zou dat dan zijn?",
+            "Wat is het moeilijkste gesprek dat je ooit hebt gevoerd, en wat heb je ervan geleerd?",
+            "Welke relatie in je leven is het meest gecompliceerd, en waarom?",
+            "Wat zou je vandaag nog willen veranderen in je leven, als er geen consequenties waren?",
+            "Welke waarheid vermijd je het liefst, en waarom?",
+            "Wat zou je doen als je wist dat niemand je zou veroordelen?",
+            "Wat is een boek of film die je leven op een bepaalde manier heeft beïnvloed, en waarom?",
+            "Wat is een droom of ambitie die je nog niet hebt nagestreefd, maar wel graag zou willen?",
+            "Wat is een persoonlijke uitdaging die je hebt overwonnen, en hoe heeft dat je veranderd?",
+            "Wat is een levensles die je op een onconventionele manier hebt geleerd?",
+            "Wat is een hobby of passie die je vroeger had, maar waar je nu niet meer zoveel mee doet? Waarom niet?",
+            "Als je een jaar lang een nieuwe vaardigheid of hobby zou kunnen leren zonder enige beperking, wat zou het dan zijn en waarom?",
+            "Wat is iets dat je graag zou willen veranderen aan de wereld en hoe zou je dat aanpakken?",
+            "Hoe denk je dat je leven er over tien jaar uitziet? Wat hoop je te hebben bereikt?",
+            "Als je een dag in het leven van iemand anders zou kunnen stappen, wie zou dat dan zijn en waarom?",
+            "Wat is een wild idee of project dat je zou willen uitvoeren als geld en tijd geen rol zouden spelen?",
+            "Wat denk je dat het belangrijkste is voor een gelukkig leven?",
+            "Hoe definieer je succes voor jezelf?",
+            "Wat is een waarde of principe waar je altijd naar hebt gestreefd, en hoe pas je dat toe in je dagelijks leven?",
+            "Wat is een betekenisvolle ervaring die je hebt gehad met een persoon die je niet goed kende, maar die toch een impact heeft gehad?",
+            "Wat is een avontuur of reis die je nooit zult vergeten, en wat maakte het zo bijzonder?",
+            "Wat is een traditie of gewoonte uit je jeugd die je nog steeds waardeert of die je nu in je eigen leven toepast?",
+            "Wat is je grootste (jeugd)trauma en wat voor impact heeft dit gehad op je leven?",
+            "Wat betekent geluk voor jou, en denk je dat het een doel is dat we actief moeten nastreven?",
+            "Als je je leven zou kunnen herbeleven, wat zou je dan anders doen en waarom?",
+            "Denk je dat mensen van nature goed of slecht zijn?",
+            "Wat beschouw je als je grootste prestatie in het leven, en waarom?",
+            "Wat betekent vrijheid voor jou, en hoe belangrijk is het in je leven?",
+            "Als je de waarheid over één mysterie van het universum kon ontdekken, welke zou dat zijn?",
+            "Hoe denk je dat technologie ons leven in de komende 50 jaar zal beïnvloeden?",
+            "Wat zou je doen als je wist dat je nog maar een jaar te leven had?",
+            "Is het belangrijker om geliefd te zijn of om lief te hebben?",
+            "Wat betekent succes voor jou, en hoe meet je dat in je eigen leven?",
+            "Hoe belangrijk is geld voor je?",
+            "Denk jij dat je jezelf anders voordoet dan je daadwerkelijk bent?"
+        ];
+
+        function getRandomQuestions(array, num) {
+            const shuffled = array.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function showRandomQuestion() {
+            document.getElementById('choiceButtons').style.display = "none";
+            const container = document.getElementById('vraagContainer');
+
+            let counter = 0;
+            const interval = setInterval(() => {
+                const randomQuestion = vragen[Math.floor(Math.random() * vragen.length)];
+                container.innerHTML = randomQuestion;
+                counter++;
+
+                if (counter >= 5) { // Show 5 random questions
+                    clearInterval(interval);
+
+                    // Now show two random choices
+                    const [choice1, choice2] = getRandomQuestions(vragen, 2);
+                    document.getElementById('choice1').innerHTML = choice1;
+                    document.getElementById('choice2').innerHTML = choice2;
+                    container.innerHTML = ""; // Clear the rotating questions
+                    document.getElementById('choiceButtons').style.display = "block";
+                }
+            }, 150);
+        }
+
+        document.getElementById('startButton').addEventListener('click', showRandomQuestion);
+    </script>
+</body>
+</html>
